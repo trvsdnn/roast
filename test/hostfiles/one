@@ -1,0 +1,24 @@
+##
+# Host Database
+#
+# localhost is used to configure the loopback interface
+# when the system is booting.  Do not change this entry.
+##
+127.0.0.1	localhost
+255.255.255.255	broadcasthost
+
+127.0.0.1 hl2rcv.adobe.com # HEHE
+10.0.1.1 example.dev
+
+## ROAST [base]
+127.0.0.1 foo.com
+10.0.1.2  blah.dev
+## TSAOR
+
+## ROAST [staging]
+10.0.20.1 staging.something.com
+10.0.20.2 staging-two.something.com
+## TSAOR
+
+::1             localhost
+fe80::1%lo0     localhost
