@@ -3,16 +3,15 @@ require 'test_helper'
 describe Roast::Group do
 
   before do
-    @group = Roast::Group.new(:base, [
-      Roast::Host.new('127.0.0.1', 'foo.bar.dev'),
-      Roast::Host.new('10.0.1.1', 'example.org')
-    ])
+    @group = Roast::Group.new(:base)
+    @group <<  Roast::Host.new('127.0.0.1', 'foo.bar.dev')
+    @group << Roast::Host.new('10.0.1.1', 'example.org')
   end
 
   it "adds a host to the group" do
     host = Roast::Host.new('127.0.0.1', 'something.dev')
     @group << host
-    @group.hosts.include?(host).must_equal true
+    @group.hosts.has_key?(host.hostname.to_sym).must_equal true
   end
 
   it "pads host entries correctly" do

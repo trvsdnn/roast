@@ -3,9 +3,9 @@ module Roast
     attr_reader :name
     attr_reader :hosts
 
-    def initialize(name, hosts = [])
+    def initialize(name)
       @name     = name
-      @hosts    = hosts
+      @hosts    = {}
       @disabled = false
     end
 
@@ -18,7 +18,7 @@ module Roast
     end
 
     def <<(host)
-      @hosts << host
+      hosts[host.hostname.to_sym] = host
     end
 
     def entries_to_s(reversed = false)
@@ -27,12 +27,12 @@ module Roast
 
       # TODO: not happy with this reversed junk
       if reversed
-        max = hosts.map { |h| h.hostname.size }.max
+        max = hosts.values.map { |h| h.hostname.size }.max
       else
-        max = hosts.map { |h| h.ip_address.size }.max
+        max = hosts.values.map { |h| h.ip_address.size }.max
       end
 
-      hosts.each do |host|
+      hosts.values.each do |host|
         pieces = [ host.ip_address, host.hostname ]
         pieces.reverse! if reversed
 
