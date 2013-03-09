@@ -3,7 +3,7 @@ require 'tempfile'
 
 require 'roast/group'
 require 'roast/host'
-require 'roast/hostsfile'
+require 'roast/hosts_file'
 require 'roast/version'
 
 module Roast

@@ -1,11 +1,11 @@
 require 'test_helper'
 
-describe Roast::Hostsfile do
+describe Roast::HostsFile do
   HOSTSFILES_PATH = File.expand_path('../hostfiles', __FILE__)
 
   before do
     path   = File.join(HOSTSFILES_PATH, 'one')
-    @hosts = Roast::Hostsfile.new(path).read
+    @hosts = Roast::HostsFile.new(path).read
   end
 
   after do
