@@ -2,6 +2,7 @@ require 'fileutils'
 require 'optparse'
 require 'tempfile'
 
+require 'roast/cli/commands'
 require 'roast/cli'
 require 'roast/group'
 require 'roast/host'

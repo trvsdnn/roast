@@ -1,5 +1,7 @@
 module Roast
   class CLI
+    include Roast::CLI::Commands
+
     BANNER = <<-BANNER
     Usage: roast [GROUP] IP HOSTNAME
 
@@ -12,7 +14,7 @@ module Roast
     BANNER
 
     # Use OptionParser to parse options, then we remove them from ARGV
-    def self.parse_options
+    def parse_options
       @opts = OptionParser.new do |opts|
         opts.banner = BANNER.gsub(/^ {4}/, '')
 
@@ -33,30 +35,16 @@ module Roast
       @opts.parse!
     end
 
-    def self.print_usage_and_exit!
+    def print_usage_and_exit!
       puts @opts
       exit
     end
 
     # Called from the executable. Parses the command line arguments
-    def self.run
+    def run
       parse_options
       print_usage_and_exit! if ARGV.empty?
-
-      command = ARGV.shift
-
-      hosts_file = HostsFile.new
-
-      case command
-      when 'a', 'add'
-        hosts_file.add(ARGV)
-      when 'd', 'disable'
-        hosts_file.disable(ARGV)
-      when 'delete'
-        hosts_file.delete(ARGV)
-      when 'l', 'list'
-        hosts_file.list
-      end
+      dispatch
     end
   end
 end
