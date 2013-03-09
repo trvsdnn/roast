@@ -11,18 +11,19 @@ describe Roast::Group do
   it "adds a host to the group" do
     host = Roast::Host.new('127.0.0.1', 'something.dev')
     @group << host
-    @group.hosts.has_key?(host.hostname.to_sym).must_equal true
+    @group.hosts.has_key?(host.hostname).must_equal true
   end
 
-  it "pads host entries correctly" do
-    @group.entries_to_s.must_equal <<-RESULT.gsub /^\s+/, ""
-    127.0.0.1    foo.bar.dev
-    10.0.1.1     example.org
+  it "outputs host entries to cli correctly" do
+    @group.to_cli.must_equal <<-RESULT.gsub(/^\s{4}/, "")
+     - \e[4mbase\e[0m
+          foo.bar.dev    127.0.0.1\e[0m
+          example.org    10.0.1.1\e[0m
     RESULT
   end
 
   it "converts the group to a string correctly" do
-    @group.to_s.must_equal <<-RESULT.gsub /^\s+/, ""
+    @group.to_hosts_file.must_equal <<-RESULT.gsub(/^\s+/, "").chomp
     ## ROAST [base]
     127.0.0.1    foo.bar.dev
     10.0.1.1     example.org
