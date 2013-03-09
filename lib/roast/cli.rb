@@ -20,7 +20,7 @@ module Roast
         opts.separator 'Options:'
 
         opts.on('-v', 'Print the version') do
-          puts Chainsaw::VERSION
+          puts Roast::VERSION
           exit
         end
 
@@ -43,9 +43,20 @@ module Roast
       parse_options
       print_usage_and_exit! if ARGV.empty?
 
-      command = ARGV.first
+      command = ARGV.shift
 
-      Filter.filter(logfile, time, @options)
+      hosts_file = HostsFile.new
+
+      case command
+      when 'a', 'add'
+        hosts_file.add(ARGV)
+      when 'd', 'disable'
+        hosts_file.disable(ARGV)
+      when 'delete'
+        hosts_file.delete(ARGV)
+      when 'l', 'list'
+        hosts_file.list
+      end
     end
   end
 end
