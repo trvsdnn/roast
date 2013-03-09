@@ -4,12 +4,14 @@ module Roast
     END_GROUP_PATTERN = /^## TSAOR$/
 
     attr_reader :path
+    attr_reader :static_lines
     attr_reader :groups
 
     def initialize(path)
-      @path   = path
-      @groups = {
-        :base => []
+      @path         = path
+      @static_lines = []
+      @groups       = {
+        :base => Group.new(:base)
       }
     end
 
@@ -27,13 +29,29 @@ module Roast
             in_group = false
           elsif in_group
             sgroup = group.to_sym
-            groups[sgroup] ||= []
-            groups[sgroup] << Host.parse_and_create(sgroup, line)
+            groups[sgroup] ||= Group.new(sgroup)
+            groups[sgroup] << Host.parse_and_create(line)
+          else
+            static_lines << line
           end
         end
       end
 
       self
+    end
+
+    def write(output_path = nil)
+      output_path = output_path || path
+      temp_file   = Tempfile.new('hosts')
+
+      static_lines.each { |line| temp_file.puts(line) }
+      groups.each_value { |group| temp_file.puts("#{group}\n") }
+
+      FileUtils.cp(path, path + '.bak') if output_path.eql?(path)
+      FileUtils.mv(temp_file.path, output_path, :force => true)
+    ensure
+      temp_file.close
+      temp_file.unlink
     end
 
   end
