@@ -2,7 +2,7 @@ module Roast
   class Host
     IP_PATTERN = /\A\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\z/
     HOST_PATTERN = /\A[a-z0-9\-\.]+\z/
-    IP_HOST_PATTERN = /^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\s+([^\s]+)/
+    IP_HOST_PATTERN = /^#?\s*(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\s+([^\s]+)/
 
     attr_reader :ip_address
     attr_reader :hostname
