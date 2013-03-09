@@ -14,6 +14,16 @@ describe Roast::Group do
     @group.hosts.has_key?(host.hostname).must_equal true
   end
 
+  it "disables and enables all hosts in the group" do
+    @group.disable!
+    @group.must_be :disabled?
+    @group.hosts.values.all? { |h| h.disabled? }.must_equal true
+
+    @group.enable!
+    @group.must_be :enabled?
+    @group.hosts.values.all? { |h| h.enabled? }.must_equal true
+  end
+
   it "outputs host entries to cli correctly" do
     @group.to_cli.must_equal <<-RESULT.gsub(/^\s{4}/, "")
      - \e[4mbase\e[0m

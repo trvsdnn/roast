@@ -6,61 +6,63 @@ module Roast
     def initialize(name)
       @name     = name
       @hosts    = {}
-      @disabled = false
     end
 
-    def disabled!
-      @disabled = true
+    def disable!
+      hosts.values.each { |h| h.disable! }
+    end
+
+    def enable!
+      hosts.values.each { |h| h.enable! }
     end
 
     def disabled?
-      @disabled
+      hosts.values.all? { |h| h.disabled? }
+    end
+
+    def enabled?
+      hosts.values.all? { |h| h.enabled? }
     end
 
     def <<(host)
-      hosts[host.hostname.to_sym] = host
+      hosts[host.hostname] = host
     end
 
-    def entries_to_s(reversed = false)
-      string = ''
-      return string if hosts.empty?
+    def [](hostname)
+      hosts[hostname]
+    end
 
-      # TODO: not happy with this reversed junk
-      if reversed
-        max = hosts.values.map { |h| h.hostname.size }.max
-      else
-        max = hosts.values.map { |h| h.ip_address.size }.max
-      end
+    def to_cli
+      string = " - \033[4m#{name}\033[0m\n"
+      max    = hosts.values.map { |h| h.hostname.size }.max
 
       hosts.values.each do |host|
-        pieces = [ host.ip_address, host.hostname ]
-        pieces.reverse! if reversed
-
-        padding = ' ' * (max - pieces.first.size + 4)
-        string << "#{pieces.first}#{padding}#{pieces.last}\n"
+        padding = ' ' * (max - host.hostname.size + 4)
+        if host.disabled?
+          string << "   \033[31m \u00D7 "
+        else
+          string << '      '
+        end
+        string << "#{host.hostname}#{padding}#{host.ip_address}\033[0m\n"
       end
 
       string
     end
 
-    def section(&block)
-      result = disabled? ? '###' : '##'
-      result << " ROAST [#{name}]\n"
-      result << yield
-      result << (disabled? ? '###' : '##')
-      result << " TSAOR\n"
+    def to_hosts_file
+      max     = hosts.values.map { |h| h.ip_address.size }.max
+      section = "## ROAST [#{name}]\n"
 
-      result
-    end
-
-    def to_s
-      section do
-        if disabled?
-          entries_to_s.gsub(/^/, '# ')
-        else
-          entries_to_s
-        end
+      hosts.values.each do |host|
+        padding = ' ' * (max - host.ip_address.size + 4)
+        section << '# ' if host.disabled?
+        section << "#{host.ip_address}#{padding}#{host.hostname}\n"
       end
+
+      section << "## TSAOR"
+
+      section
     end
+
   end
 end
