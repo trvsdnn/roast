@@ -4,34 +4,63 @@ module Roast
     attr_reader :hosts
 
     def initialize(name, hosts = [])
-      @name = name
-      @hosts = hosts
+      @name     = name
+      @hosts    = hosts
+      @disabled = false
+    end
+
+    def disabled!
+      @disabled = true
+    end
+
+    def disabled?
+      @disabled
     end
 
     def <<(host)
       @hosts << host
     end
 
-    def entries_to_s(indent = 0)
+    def entries_to_s(reversed = false)
       string = ''
       return string if hosts.empty?
 
-      max = hosts.map{ |h| h.ip_address.size }.max
+      # TODO: not happy with this reversed junk
+      if reversed
+        max = hosts.map { |h| h.hostname.size }.max
+      else
+        max = hosts.map { |h| h.ip_address.size }.max
+      end
+
       hosts.each do |host|
-        padding = ' ' * (max - host.ip_address.size + 4)
-        string << ' ' * indent
-        string << "#{host.ip_address}#{padding}#{host.hostname}\n"
+        pieces = [ host.ip_address, host.hostname ]
+        pieces.reverse! if reversed
+
+        padding = ' ' * (max - pieces.first.size + 4)
+        string << "#{pieces.first}#{padding}#{pieces.last}\n"
       end
 
       string
     end
 
+    def section(&block)
+      result = disabled? ? '###' : '##'
+      result << " ROAST [#{name}]\n"
+      result << yield
+      result << (disabled? ? '###' : '##')
+      result << " TSAOR\n"
+
+      result
+    end
+
     def to_s
-      <<-GROUP.gsub /^\s+/, ""
-        ## ROAST [#{name}]
-        #{entries_to_s}
-        ## TSAOR
-      GROUP
+      section do
+        if disabled?
+          entries_to_s.gsub(/^/, '# ')
+        else
+          entries_to_s
+        end
+      end
     end
   end
 end
