@@ -6,6 +6,16 @@ describe Roast::Host do
     host = Roast::Host.parse_and_create('127.0.0.1  foobar.dev')
     host.ip_address.must_equal '127.0.0.1'
     host.hostname.must_equal 'foobar.dev'
+    host.must_be :enabled?
+    host.wont_be :disabled?
+  end
+
+  it "parses a disabled hosts file line and creates a host" do
+    host = Roast::Host.parse_and_create('# 127.0.0.1  foobar.dev')
+    host.ip_address.must_equal '127.0.0.1'
+    host.hostname.must_equal 'foobar.dev'
+    host.must_be :disabled?
+    host.wont_be :enabled?
   end
 
   it "validates the ip address" do
