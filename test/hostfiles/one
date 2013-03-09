@@ -18,9 +18,27 @@ fe80::1%lo0     localhost
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 ## ROAST [base]
 127.0.0.1    foo.com
 10.0.1.2     blah.dev
+127.0.0.1    example.org
+127.0.0.1    example.org
+127.0.0.1    example.org
+127.0.0.1    example.org
+127.0.0.1    example.org
+127.0.0.1    example.org
 127.0.0.1    example.org
 127.0.0.1    example.org
 127.0.0.1    example.org

@@ -16,10 +16,10 @@ module Roast
       string = ''
       return string if hosts.empty?
 
-      max = hosts.map{ |h| h.ip.size }.max
+      max = hosts.map{ |h| h.ip_address.size }.max
       hosts.each do |host|
-        padding = ' ' * (max - host.ip.size + 4)
-        string << "#{host.ip}#{padding}#{host.host}\n"
+        padding = ' ' * (max - host.ip_address.size + 4)
+        string << "#{host.ip_address}#{padding}#{host.hostname}\n"
       end
 
       string

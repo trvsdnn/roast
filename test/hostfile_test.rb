@@ -18,12 +18,12 @@ describe Roast::Hostsfile do
   it "parses a hostfile and creates groups and host entries" do
     @hosts.groups.length.must_equal 2
     [[ '127.0.0.1', 'foo.com' ], [ '10.0.1.2', 'blah.dev' ]].each_with_index do |host, i|
-      @hosts.groups[:base].hosts[i].ip.must_equal host.first
-      @hosts.groups[:base].hosts[i].host.must_equal host.last
+      @hosts.groups[:base].hosts[i].ip_address.must_equal host.first
+      @hosts.groups[:base].hosts[i].hostname.must_equal host.last
     end
     [[ '10.0.20.1', 'staging.something.com' ], [ '10.0.20.2', 'staging-two.something.com' ]].each_with_index do |host, i|
-      @hosts.groups[:staging].hosts[i].ip.must_equal host.first
-      @hosts.groups[:staging].hosts[i].host.must_equal host.last
+      @hosts.groups[:staging].hosts[i].ip_address.must_equal host.first
+      @hosts.groups[:staging].hosts[i].hostname.must_equal host.last
     end
   end
 
