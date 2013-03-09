@@ -12,13 +12,14 @@ module Roast
       @hosts << host
     end
 
-    def entries_to_s
+    def entries_to_s(indent = 0)
       string = ''
       return string if hosts.empty?
 
       max = hosts.map{ |h| h.ip_address.size }.max
       hosts.each do |host|
         padding = ' ' * (max - host.ip_address.size + 4)
+        string << ' ' * indent
         string << "#{host.ip_address}#{padding}#{host.hostname}\n"
       end
 
