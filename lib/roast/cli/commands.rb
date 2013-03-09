@@ -12,12 +12,11 @@ module Roast
 
       def dispatch
         command    = ARGV.shift
-        command    = ALIASES[command] || command
-
-        hosts_file = HostsFile.new
+        command    = (ALIASES[command] || command).tr('-', '_')
 
         if respond_to? command
-          send(command.tr('-', '_'), *ARGV)
+          @hosts_file = HostsFile.new.read
+          send(command, *ARGV)
         else
           puts "`#{command}' is an unknown command, use --help to see available commands"
           exit
@@ -43,7 +42,7 @@ module Roast
 
       def enable(*args)
         entry   = args.first
-        results = HostsFile.enable(entry)
+        results = @hosts_file.enable(entry)
         if results.empty?
           puts "no entries found matching `#{entry}'"
         else
@@ -53,7 +52,7 @@ module Roast
 
       def disable(*args)
         entry   = args.first
-        results = HostsFile.disable(entry)
+        results = @hosts_file.disable(entry)
         if results.empty?
           puts "no entries found matching `#{entry}'"
         else
@@ -64,7 +63,7 @@ module Roast
       def enable_group(*args)
         group = args.first
 
-        if HostsFile.enable_group(group)
+        if @hosts_file.enable_group(group)
           puts "enabled group `#{group}'"
         else
           puts "Unable to enable the group `#{group}', it doesn't exist yet."
@@ -74,7 +73,7 @@ module Roast
       def disable_group(*args)
         group = args.first
 
-        if HostsFile.delete_group(group)
+        if @hosts_file.disable_group(group)
           puts "disabled group `#{group}'"
         else
           puts "Unable to disable the group `#{group}', it doesn't exist yet."
@@ -83,13 +82,13 @@ module Roast
 
       def list(*args)
         # TODO: a bit awkward, use a class var?
-        path, groups = HostsFile.list
+        path, groups = @hosts_file.list
 
         if groups.empty?
           puts "there are no roast entries in `#{path}'\n"
         else
           entries = ''
-          groups.values.each { |group| entries << group.to_cli }
+          groups.each { |group| entries << group.to_cli }
           puts entries.chomp
         end
       end
