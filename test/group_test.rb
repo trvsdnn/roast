@@ -38,6 +38,26 @@ describe Roast::Group do
     results.first.must_equal @group.hosts.last
   end
 
+  it "deletes hosts by ip address" do
+    deleted = @group.hosts.first
+    results = @group.delete_host('127.0.0.1')
+    results.wont_be :empty?
+    results.size.must_equal 1
+    results.first.must_equal deleted
+    @group.hosts.size.must_equal 1
+    @group.hosts.include?(deleted).wont_equal true
+  end
+
+  it "deletes hosts by hostname" do
+    deleted = @group.hosts.last
+    results = @group.delete_host('example.org')
+    results.wont_be :empty?
+    results.size.must_equal 1
+    results.first.must_equal deleted
+    @group.hosts.size.must_equal 1
+    @group.hosts.include?(deleted).wont_equal true
+  end
+
   it "returns an empty array if host could not be found" do
     results = @group.find_host('something.else')
     results.must_be :empty?

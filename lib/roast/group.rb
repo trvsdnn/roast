@@ -43,6 +43,17 @@ module Roast
       end
     end
 
+    def delete_host(entry)
+      deleted = []
+      if entry =~ Host::IP_PATTERN
+        @hosts.each { |k, h| deleted << @hosts.delete(k) if h.ip_address == entry }
+      else
+        @hosts.each { |k, h| deleted << @hosts.delete(k) if h.hostname == entry }
+      end
+
+      deleted
+    end
+
     def to_cli
       string = " - \033[4m#{name}\033[0m\n"
       max    = hosts.map { |h| h.hostname.size }.max
