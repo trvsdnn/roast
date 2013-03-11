@@ -21,6 +21,10 @@ module Roast
       groups.map { |g| g.hosts }.flatten
     end
 
+    def [](group)
+      @groups[group]
+    end
+
     def read
       in_group      = false
       group         = nil
@@ -29,13 +33,14 @@ module Roast
         file.each_line do |line|
           if _match = line.match(GROUP_PATTERN)
             in_group      = true
-            group         = _match[1]
-            @groups[group] ||= Group.new(group)
-            @groups[group].disable! if line =~ DISABLED_PATTERN
+            group         = Group.new(_match[1])
+
+            group.disable! if line =~ DISABLED_PATTERN
+            @groups[group.name] ||= group
           elsif line.match(END_GROUP_PATTERN)
             in_group = false
           elsif in_group
-            @groups[group] << Host.parse_and_create(line)
+            group << Host.parse_and_create(line)
           else
             static_lines << line
           end
