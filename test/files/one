@@ -12,3 +12,14 @@
 
 ::1             localhost
 fe80::1%lo0     localhost
+
+## ROAST [base]
+127.0.0.1    local.dev
+10.0.1.2     something.dev
+127.0.0.1    example.org
+## TSAOR
+
+## ROAST [staging]
+10.0.20.1    staging.something.com
+10.0.20.2    staging-two.something.com
+## TSAOR
