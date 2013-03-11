@@ -73,17 +73,14 @@ module Roast
     end
 
     def add(group, ip_address, hostname)
-      # TODO: init one if it's not there
+      @groups[group] ||= Group.new(group)
       @groups[group] << Host.new(ip_address, hostname)
-      write
     end
 
     def enable(entry)
       results = find_host(entry)
 
       results.each { |h| h.enable! }
-      write
-
       results
     end
 
@@ -91,14 +88,11 @@ module Roast
       results = find_host(entry)
 
       results.each { |h| h.disable! }
-      write
-
       results
     end
 
     def delete(entry)
       results = delete_host(entry)
-      write
 
       results
     end
@@ -107,7 +101,6 @@ module Roast
       return false unless @groups.has_key?(group)
 
       @groups[group].enable!
-      write
 
       true
     end
@@ -116,7 +109,6 @@ module Roast
       return false unless @groups.has_key?(group)
 
       @groups[group].disable!
-      write
 
       true
     end
@@ -125,7 +117,6 @@ module Roast
       return false unless @groups.has_key?(group)
 
       @groups.delete(group)
-      write
 
       true
     end
