@@ -60,6 +60,16 @@ module Roast
         end
       end
 
+      def delete(*args)
+        entry   = args.first
+        results = @hosts_file.delete(entry)
+        if results.empty?
+          puts "no entries found matching `#{entry}'"
+        else
+          puts "deleted entry#{results.length > 1 ? 's' : ''} matching `#{entry}'"
+        end
+      end
+
       def enable_group(*args)
         group = args.first
 
@@ -77,6 +87,16 @@ module Roast
           puts "disabled group `#{group}'"
         else
           puts "Unable to disable the group `#{group}', it doesn't exist yet."
+        end
+      end
+
+      def delete_group(*args)
+        group = args.first
+
+        if @hosts_file.delete_group(group)
+          puts "deleted group `#{group}'"
+        else
+          puts "Unable to delete the group `#{group}', it doesn't exist yet."
         end
       end
 

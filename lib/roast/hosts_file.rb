@@ -63,6 +63,10 @@ module Roast
       groups.map { |g| g.find_host(entry) }.flatten
     end
 
+    def delete_host(entry)
+      groups.map { |g| g.delete_host(entry) }.flatten
+    end
+
     def add(group, ip_address, hostname)
       # TODO: init one if it's not there
       @groups[group] << Host.new(ip_address, hostname)
@@ -87,6 +91,22 @@ module Roast
       results
     end
 
+    def delete(entry)
+      results = delete_host(entry)
+      write
+
+      results
+    end
+
+    def enable_group(group)
+      return false unless @groups.has_key?(group)
+
+      @groups[group].enable!
+      write
+
+      true
+    end
+
     def disable_group(group)
       return false unless @groups.has_key?(group)
 
@@ -96,10 +116,10 @@ module Roast
       true
     end
 
-    def enable_group(group)
+    def delete_group(group)
       return false unless @groups.has_key?(group)
 
-      @groups[group].enable!
+      @groups.delete(group)
       write
 
       true
