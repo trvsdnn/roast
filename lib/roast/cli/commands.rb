@@ -36,6 +36,7 @@ module Roast
         ip_address, hostname = args
 
         if HostsFile.add(group, ip_address, hostname)
+          @hosts_file.write
           puts "added host entry for `#{ip_address}  \033[4m#{hostname}\033[0m'"
         end
       end
@@ -46,6 +47,7 @@ module Roast
         if results.empty?
           puts "no entries found matching `#{entry}'"
         else
+          @hosts_file.write
           puts "enabled entry#{results.length > 1 ? 's' : ''} matching `#{entry}'"
         end
       end
@@ -56,6 +58,7 @@ module Roast
         if results.empty?
           puts "no entries found matching `#{entry}'"
         else
+          @hosts_file.write
           puts "disabled entry#{results.length > 1 ? 's' : ''} matching `#{entry}'"
         end
       end
@@ -66,6 +69,7 @@ module Roast
         if results.empty?
           puts "no entries found matching `#{entry}'"
         else
+          @hosts_file.write
           puts "deleted entry#{results.length > 1 ? 's' : ''} matching `#{entry}'"
         end
       end
@@ -74,6 +78,7 @@ module Roast
         group = args.first
 
         if @hosts_file.enable_group(group)
+          @hosts_file.write
           puts "enabled group `#{group}'"
         else
           puts "Unable to enable the group `#{group}', it doesn't exist yet."
@@ -84,6 +89,7 @@ module Roast
         group = args.first
 
         if @hosts_file.disable_group(group)
+          @hosts_file.write
           puts "disabled group `#{group}'"
         else
           puts "Unable to disable the group `#{group}', it doesn't exist yet."
@@ -94,6 +100,7 @@ module Roast
         group = args.first
 
         if @hosts_file.delete_group(group)
+          @hosts_file.write
           puts "deleted group `#{group}'"
         else
           puts "Unable to delete the group `#{group}', it doesn't exist yet."
