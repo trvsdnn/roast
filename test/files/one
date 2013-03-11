@@ -13,7 +13,13 @@ fe80::1%lo0     localhost
 127.0.0.1    example.org
 ## TSAOR
 
+## ROAST [foo]
+# 10.0.3.1    foo.bar
+# 10.0.3.2    food.bar
+## TSAOR
+
 ## ROAST [staging]
-10.0.20.1    staging.something.com
-10.0.20.2    staging-two.something.com
+10.0.20.1     staging.something.com
+10.0.20.2     staging-two.something.com
+# 10.10.30.1    staging.three.something.com
 ## TSAOR
