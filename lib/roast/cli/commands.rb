@@ -35,7 +35,7 @@ module Roast
         args.reverse! if args.last =~ Host::IP_PATTERN
         ip_address, hostname = args
 
-        if HostsFile.add(group, ip_address, hostname)
+        if @hosts_file.add(group, ip_address, hostname)
           @hosts_file.write
           puts "added host entry for `#{ip_address}  \033[4m#{hostname}\033[0m'"
         end
