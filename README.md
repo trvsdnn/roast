@@ -19,7 +19,7 @@ Roast has a decent set of commands available:
     delete          deletes an entry entirely
     delete-group    deletes an enitre group
 
-__a few of the commands have aliases, they are listed to the right__
+*a few of the commands have aliases, they are listed to the right*
 
 ## Usage
 
@@ -29,16 +29,18 @@ A few examples of using roast to manage your `/etc/hosts` file:
     > roast list
 
     # add an entry to the base group
-    > roast add 10.0.1.1 something.dev
+    > sudo roast add 10.0.1.1 something.dev
 
     # add an entry to the "testing" group
-    > roast add testing 127.0.0.1 exampleapp.dev
+    > sudo roast add testing 127.0.0.1 exampleapp.dev
 
     # disable all entries with the ip "10.0.1.1"
-    > roast disable 10.0.1.1
+    > sudo roast disable 10.0.1.1
 
     # delete an entry entirely
-    > roast delete exampleapp.dev
+    > sudo roast delete exampleapp.dev
+
+*notice that you can list entries without sudo, but editing the hosts file does require sudo*
 
 ## Contributing
 
