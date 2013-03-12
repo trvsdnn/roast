@@ -1,8 +1,8 @@
 module Roast
   class HostsFile
-    GROUP_PATTERN     = /^###? ROAST \[([\w-]+)\]$/
-    DISABLED_PATTERN  = /^###/
-    END_GROUP_PATTERN = /^###? TSAOR$/
+    GROUP_PATTERN = /^## \[([\w\s-]+)\]$/
+    HOST_PATTERN  = /^#?\s*(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\s+([^\s]+)/
+    DISABLED_PATTERN = /^# \d+/
 
     attr_reader :path
     attr_reader :static_lines
@@ -26,21 +26,19 @@ module Roast
     end
 
     def read
-      in_group      = false
-      group         = nil
+      in_group = false
+      group    = nil
 
       File.open(path, 'r') do |file|
         file.each_line do |line|
-          if _match = line.match(GROUP_PATTERN)
-            in_group      = true
-            group         = Group.new(_match[1])
-
-            group.disable! if line =~ DISABLED_PATTERN
+          if group_match = line.match(GROUP_PATTERN)
+            in_group = true
+            group    = Group.new(group_match[1])
             @groups[group.name] ||= group
-          elsif line.match(END_GROUP_PATTERN)
-            in_group = false
-          elsif in_group
-            group << Host.parse_and_create(line)
+          elsif group && host_match = line.match(HOST_PATTERN)
+            host = Host.new(host_match[1], host_match[2])
+            host.disable! if line =~ DISABLED_PATTERN
+            group << host
           else
             static_lines << line
           end
@@ -57,6 +55,7 @@ module Roast
       temp_file << static_lines.join.sub(/\n{3,}\z/, "\n\n")
       temp_file << groups.map { |g| g.to_hosts_file.chomp }.join("\n\n")
 
+      File.chmod(0644, temp_file)
       FileUtils.cp(path, path + '.bak') if output_path.eql?(path)
       FileUtils.mv(temp_file.path, output_path, :force => true)
     ensure

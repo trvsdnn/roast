@@ -72,11 +72,10 @@ describe Roast::Group do
   end
 
   it "converts the group to a string correctly" do
-    @group.to_hosts_file.must_equal <<-RESULT.gsub(/^\s+/, "").chomp
-    ## ROAST [base]
+    @group.to_hosts_file.must_equal <<-RESULT.gsub(/^\s+/, "")
+    ## [base]
     127.0.0.1    foo.bar.dev
     10.0.1.1     example.org
-    ## TSAOR
     RESULT
   end
 

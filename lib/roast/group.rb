@@ -73,15 +73,13 @@ module Roast
 
     def to_hosts_file
       max     = hosts.map { |h| h.ip_address.size }.max
-      section = "## ROAST [#{name}]\n"
+      section = "## [#{name}]\n"
 
       hosts.each do |host|
         padding = ' ' * (max - host.ip_address.size + 4)
         section << '# ' if host.disabled?
         section << "#{host.ip_address}#{padding}#{host.hostname}\n"
       end
-
-      section << "## TSAOR"
 
       section
     end
