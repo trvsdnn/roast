@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["blahed"]
   spec.email         = ["tdunn13@gmail.com"]
   spec.description   = "Roast is a simple /etc/hosts entry manager"
-  spec.summary       = "Roast is a simple /etc/hosts entry manager"
+  spec.summary       = "Roast helps you group and manage entries in your hosts file"
   spec.homepage      = "https://github.com/blahed/roast/"
   spec.license       = "MIT"
 
