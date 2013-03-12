@@ -2,22 +2,6 @@ require 'test_helper'
 
 describe Roast::Host do
 
-  it "parses a hosts file line and creates a host" do
-    host = Roast::Host.parse_and_create('127.0.0.1  foobar.dev')
-    host.ip_address.must_equal '127.0.0.1'
-    host.hostname.must_equal 'foobar.dev'
-    host.must_be :enabled?
-    host.wont_be :disabled?
-  end
-
-  it "parses a disabled hosts file line and creates a host" do
-    host = Roast::Host.parse_and_create('# 127.0.0.1  foobar.dev')
-    host.ip_address.must_equal '127.0.0.1'
-    host.hostname.must_equal 'foobar.dev'
-    host.must_be :disabled?
-    host.wont_be :enabled?
-  end
-
   it "validates the ip address" do
     ['foo', 'example.com', '127.0.0.1.1', '1277.0.0.1'].each do |ip|
       lambda { Roast::Host.new(ip, 'blah.dev') }.must_raise ArgumentError
