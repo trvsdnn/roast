@@ -5,13 +5,13 @@ Roast helps you manage entries in your `/etc/hosts` file. Roast allows you to gr
 ## Installation
 
 ```bash
-> gem install roast
+$ gem install roast
 ```
 
 ## Commands
 
 Roast has a decent set of commands available:
-```bash
+```
 list                list the entries in the hosts file          alias: l
 add                 adds a new entry to the hosts file          alias: a
 enable              enables a disabled (commented out) entry    alias: e
@@ -28,19 +28,19 @@ delete-group        deletes an enitre group
 A few examples of using roast to manage your `/etc/hosts` file:
 ```bash
 # list all entires
-> roast list
+$ roast list
 
 # add an entry to the base group
-> sudo roast add 10.0.1.1 something.dev
+$ sudo roast add 10.0.1.1 something.dev
 
 # add an entry to the "testing" group
-> sudo roast add testing 127.0.0.1 exampleapp.dev
+$ sudo roast add testing 127.0.0.1 exampleapp.dev
 
 # disable all entries with the ip "10.0.1.1"
-> sudo roast disable 10.0.1.1
+$ sudo roast disable 10.0.1.1
 
 # delete an entry entirely
-> sudo roast delete exampleapp.dev
+$ sudo roast delete exampleapp.dev
 ```
 
 *notice that you can list entries without sudo, but editing the hosts file does require sudo*
