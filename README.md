@@ -10,14 +10,14 @@ Roast helps you manage entries in your `/etc/hosts` file. Roast allows you to gr
 
 Roast has a decent set of commands available:
 
-    list            list the entries in the hosts file          alias: l
-    add             adds a new entry to the hosts file          alias: a
-    enable          enables a disabled (commented out) entry    alias: e
-    enable-group    enables an entire group                     alias: eg
-    disable         disables an entry (comments it out)         alias: d
-    disable-group   disables an entire group                    alias: dg
-    delete          deletes an entry entirely
-    delete-group    deletes an enitre group
+    list                list the entries in the hosts file          alias: l
+    add                 adds a new entry to the hosts file          alias: a
+    enable              enables a disabled (commented out) entry    alias: e
+    enable-group        enables an entire group                     alias: eg
+    disable             disables an entry (comments it out)         alias: d
+    disable-group       disables an entire group                    alias: dg
+    delete              deletes an entry entirely
+    delete-group        deletes an enitre group
 
 *a few of the commands have aliases, they are listed to the right*
 
