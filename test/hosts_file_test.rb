@@ -392,7 +392,7 @@ describe Roast::HostsFile do
     hosts.groups.length.must_equal 3
     hosts['base'] << Roast::Host.new('127.0.0.1', 'example.org')
     hosts.write(File.join(FILES_PATH, 'two.new'))
-    File.exist?(File.join(FILES_PATH, 'one.bak')).wont_equal true
+    File.exist?(File.join(FILES_PATH, 'one.roast.bak')).wont_equal true
   end
 
   it "creates a backup file if the output file is the same as the input file" do
@@ -400,7 +400,7 @@ describe Roast::HostsFile do
     hosts.groups.length.must_equal 3
     hosts['base'] << Roast::Host.new('127.0.0.1', 'example.org')
     hosts.write
-    File.exist?(File.join(FILES_PATH, 'one.bak')).must_equal true
+    File.exist?(File.join(FILES_PATH, 'one.roast.bak')).must_equal true
   end
 
   def hosts_from_file(file_name)
