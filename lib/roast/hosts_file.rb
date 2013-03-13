@@ -55,7 +55,7 @@ module Roast
       temp_file << static_lines.join.sub(/\n{3,}\z/, "\n\n")
       temp_file << groups.map { |g| g.to_hosts_file.chomp }.join("\n\n")
 
-      File.chmod(0644, temp_file)
+      File.chmod(0644, temp_file.path)
       FileUtils.cp(path, path + '.bak') if output_path.eql?(path)
       FileUtils.mv(temp_file.path, output_path, :force => true)
     ensure
