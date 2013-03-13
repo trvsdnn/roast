@@ -61,7 +61,7 @@ module Roast
       hosts.each do |host|
         padding = ' ' * (max - host.hostname.size + 4)
         if host.disabled?
-          string << "   \033[31m \u00D7 "
+          string << "   \033[31m #{["00D7".to_i(16)].pack("U*")} "
         else
           string << '      '
         end
