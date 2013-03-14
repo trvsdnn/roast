@@ -65,7 +65,9 @@ module Roast
         else
           string << '      '
         end
-        string << "#{host.hostname}#{padding}#{host.ip_address}\033[0m\n"
+        string << "#{host.hostname}#{padding}#{host.ip_address}"
+        string << "  # #{host.alias}" if host.alias
+        string << "\033[0m\n"
       end
 
       string
@@ -78,7 +80,9 @@ module Roast
       hosts.each do |host|
         padding = ' ' * (max - host.ip_address.size + 4)
         section << '# ' if host.disabled?
-        section << "#{host.ip_address}#{padding}#{host.hostname}\n"
+        section << "#{host.ip_address}#{padding}#{host.hostname}"
+        section <<  "  # #{host.alias}" if host.alias
+        section << "\n"
       end
 
       section
