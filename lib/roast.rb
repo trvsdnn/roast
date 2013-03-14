@@ -1,6 +1,7 @@
 require 'fileutils'
 require 'optparse'
 require 'tempfile'
+require 'socket'
 
 require 'roast/cli/commands'
 require 'roast/cli'
