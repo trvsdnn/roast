@@ -25,14 +25,13 @@ module Roast
 
       def add(*args)
         if args.length < 2
-          raise ArgumentError, "You must provide an ip address and a hostname to point it too"
+          raise ArgumentError, "You must provide an ip address and a hostname to point it to: `roast add 127.0.0.1 something.dev'"
         elsif args.length == 3
           group = args.shift
         else
           group = 'base'
         end
 
-        args.reverse! if args.last =~ Host::IP_PATTERN
         ip_address, hostname = args
 
         if @hosts_file.add(group, ip_address, hostname)
