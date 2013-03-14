@@ -15,10 +15,12 @@ describe Roast::HostsFile do
     hosts.groups.length.must_equal 3
     [
       [ '127.0.0.1', 'local.dev' ],
-      [ '10.0.1.2', 'something.dev' ]
+      [ '10.0.1.2', 'something.dev' ],
+      [ '127.0.0.1', 'example.org', 'whatever.org']
     ].each_with_index do |host, i|
-      hosts['base'].hosts[i].ip_address.must_equal host.first
-      hosts['base'].hosts[i].hostname.must_equal host.last
+      hosts['base'].hosts[i].ip_address.must_equal host[0]
+      hosts['base'].hosts[i].hostname.must_equal host[1]
+      hosts['base'].hosts[i].alias.must_equal host[2] if host[2]
     end
     [
       [ '10.0.20.1', 'staging.something.com' ],
@@ -48,7 +50,7 @@ describe Roast::HostsFile do
     ## [base]
     127.0.0.1    local.dev
     10.0.1.2     something.dev
-    127.0.0.1    example.org
+    127.0.0.1    example.org  # whatever.org
 
     ## [foo]
     # 10.0.3.1    foo.bar
@@ -82,7 +84,7 @@ describe Roast::HostsFile do
     ## [base]
     127.0.0.1    local.dev
     10.0.1.2     something.dev
-    127.0.0.1    example.org
+    127.0.0.1    example.org  # whatever.org
 
     ## [foo]
     # 10.0.3.1    foo.bar
@@ -118,7 +120,7 @@ describe Roast::HostsFile do
     ## [base]
     # 127.0.0.1    local.dev
     10.0.1.2     something.dev
-    127.0.0.1    example.org
+    127.0.0.1    example.org  # whatever.org
 
     ## [foo]
     # 10.0.3.1    foo.bar
@@ -151,7 +153,7 @@ describe Roast::HostsFile do
     ## [base]
     # 127.0.0.1    local.dev
     10.0.1.2     something.dev
-    # 127.0.0.1    example.org
+    # 127.0.0.1    example.org  # whatever.org
 
     ## [foo]
     # 10.0.3.1    foo.bar
@@ -184,7 +186,7 @@ describe Roast::HostsFile do
     ## [base]
     127.0.0.1    local.dev
     10.0.1.2     something.dev
-    127.0.0.1    example.org
+    127.0.0.1    example.org  # whatever.org
 
     ## [foo]
     # 10.0.3.1    foo.bar
@@ -217,7 +219,7 @@ describe Roast::HostsFile do
     ## [base]
     127.0.0.1    local.dev
     10.0.1.2     something.dev
-    127.0.0.1    example.org
+    127.0.0.1    example.org  # whatever.org
 
     ## [foo]
     # 10.0.3.1    foo.bar
@@ -250,7 +252,7 @@ describe Roast::HostsFile do
     ## [base]
     127.0.0.1    local.dev
     10.0.1.2     something.dev
-    127.0.0.1    example.org
+    127.0.0.1    example.org  # whatever.org
 
     ## [foo]
     10.0.3.1    foo.bar
@@ -283,7 +285,7 @@ describe Roast::HostsFile do
     ## [base]
     127.0.0.1    local.dev
     10.0.1.2     something.dev
-    127.0.0.1    example.org
+    127.0.0.1    example.org  # whatever.org
 
     ## [foo]
     # 10.0.3.1    foo.bar
@@ -315,7 +317,7 @@ describe Roast::HostsFile do
 
     ## [base]
     10.0.1.2     something.dev
-    127.0.0.1    example.org
+    127.0.0.1    example.org  # whatever.org
 
     ## [foo]
     # 10.0.3.1    foo.bar
@@ -379,7 +381,7 @@ describe Roast::HostsFile do
     ## [base]
     127.0.0.1    local.dev
     10.0.1.2     something.dev
-    127.0.0.1    example.org
+    127.0.0.1    example.org  # whatever.org
 
     ## [foo]
     # 10.0.3.1    foo.bar
@@ -398,7 +400,6 @@ describe Roast::HostsFile do
   it "creates a backup file if the output file is the same as the input file" do
     hosts = hosts_from_file('one')
     hosts.groups.length.must_equal 3
-    hosts['base'] << Roast::Host.new('127.0.0.1', 'example.org')
     hosts.write
     File.exist?(File.join(FILES_PATH, 'one.roast.bak')).must_equal true
   end

@@ -1,7 +1,7 @@
 module Roast
   class HostsFile
     GROUP_PATTERN = /^## \[([\w\s-]+)\]$/
-    HOST_PATTERN  = /^#?\s*(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\s+([^\s]+)/
+    HOST_PATTERN  = /^#?\s*(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\s+([a-z0-9\.\-]+)\s*(?:#\s*(\S+))?$/
     DISABLED_PATTERN = /^# \d+/
 
     attr_reader :path
@@ -37,6 +37,7 @@ module Roast
             @groups[group.name] ||= group
           elsif group && host_match = line.match(HOST_PATTERN)
             host = Host.new(host_match[1], host_match[2])
+            host.alias = host_match[3]
             host.disable! if line =~ DISABLED_PATTERN
             group << host
           else
