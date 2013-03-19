@@ -47,6 +47,9 @@ module Roast
       end
 
       self
+    rescue Errno::EACCES
+      puts "Unable to read hosts file: `#{@path}', you might need to `sudo roast'"
+      exit 1
     end
 
     def write(output_path = nil)
@@ -55,10 +58,14 @@ module Roast
 
       temp_file << static_lines.join.sub(/\n{3,}\z/, "\n\n")
       temp_file << groups.map { |g| g.to_hosts_file.chomp }.join("\n\n")
-
       File.chmod(0644, temp_file.path)
-      FileUtils.cp(path, path + '.roast.bak') if output_path.eql?(path)
-      FileUtils.mv(temp_file.path, output_path, :force => true)
+      begin
+        FileUtils.cp(path, path + '.roast.bak') if output_path.eql?(path)
+        FileUtils.mv(temp_file.path, output_path, :force => true)
+      rescue Errno::EACCES
+        puts "Unable to write to hosts file: `#{@path}', you might need to `sudo roast'"
+        exit 1
+      end
     ensure
       temp_file.close
       temp_file.unlink
