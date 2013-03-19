@@ -5,6 +5,7 @@ module Roast
 
     attr_reader   :ip_address
     attr_reader   :hostname
+    attr_reader   :state
     attr_accessor :alias
 
     def initialize(source, hostname)
