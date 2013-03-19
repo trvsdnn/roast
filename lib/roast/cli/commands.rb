@@ -21,6 +21,9 @@ module Roast
           puts "`#{command}' is an unknown command, use --help to see available commands"
           exit
         end
+      rescue ArgumentError => e
+        puts e.message
+        exit 1
       end
 
       def add(*args)
