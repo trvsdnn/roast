@@ -123,7 +123,9 @@ module Roast
           puts "there are no roast entries in `#{path}'\n"
         else
           entries = ''
-          groups.each { |group| entries << group.to_cli }
+          indent  = groups.map { |g| g.hosts.map { |h| h.hostname.size }.max }.max
+
+          groups.each { |group| entries << group.to_cli(indent) }
           puts entries.chomp
         end
       end

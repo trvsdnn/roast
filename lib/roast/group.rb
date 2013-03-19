@@ -54,9 +54,9 @@ module Roast
       deleted
     end
 
-    def to_cli
+    def to_cli(max_indent = nil)
       string = " - \033[4m#{name}\033[0m\n"
-      max    = hosts.map { |h| h.hostname.size }.max
+      max = max_indent || hosts.map { |h| h.hostname.size }.max
 
       hosts.each do |host|
         padding = ' ' * (max - host.hostname.size + 4)
