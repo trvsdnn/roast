@@ -1,6 +1,6 @@
 module Roast
   class Host
-    IP_PATTERN       = /\A\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\z/
+    IP_PATTERN       = /\A([1-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(\.([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){3}\z/
     HOST_PATTERN     = /\A[a-z0-9\-\.]+\z/
 
     attr_reader   :ip_address
