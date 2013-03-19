@@ -36,6 +36,9 @@ $ sudo roast add 10.0.1.1 something.dev
 # add an entry to the "testing" group
 $ sudo roast add testing 127.0.0.1 exampleapp.dev
 
+# add an entry to the "testing" group via another hostname (resolve the ip)
+$ sudo roast add testing example.org exampleapp.dev
+
 # disable all entries with the ip "10.0.1.1"
 $ sudo roast disable 10.0.1.1
 
