@@ -7,13 +7,12 @@ module Roast
     attr_reader   :hostname
     attr_accessor :alias
 
-    def initialize(ip_address, hostname)
-      # TODO: use options here, all this logic sucks
-      if ip_address !~ IP_PATTERN
-        @alias = ip_address.chomp
-        resolve_alias
+    def initialize(source, hostname)
+      if source !~ IP_PATTERN
+        @alias = source.chomp
+        resolve_source
       else
-        @ip_address = ip_address.chomp
+        @ip_address = source.chomp
       end
       @hostname   = hostname.chomp.downcase
       @state      = 'enabled'
@@ -25,10 +24,10 @@ module Roast
       raise ArgumentError, "`#{hostname}' is an invalid hostname" unless hostname =~ HOST_PATTERN
     end
 
-    def resolve_alias
+    def resolve_source
       @ip_address = IPSocket.getaddress(@alias)
     rescue SocketError
-      raise ArgumentError, "unable to determine the IP of #{@alias}"
+      raise ArgumentError, "unable to determine the ip address of `#{@alias}'"
     end
 
     def disable!

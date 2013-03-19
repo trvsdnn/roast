@@ -32,12 +32,12 @@ module Roast
         elsif args.length == 3
           group = args.shift
         else
-          group = 'base'
+          group = nil
         end
 
-        ip_address, hostname = args
+        source, hostname = args
 
-        if @hosts_file.add(group, ip_address, hostname)
+        if @hosts_file.add(group, source, hostname)
           @hosts_file.write
           puts "added host entry for `#{ip_address}  \033[4m#{hostname}\033[0m'"
         end

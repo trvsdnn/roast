@@ -72,9 +72,10 @@ module Roast
       groups.map { |g| g.delete_host(entry) }.flatten
     end
 
-    def add(group, ip_address, hostname)
+    def add(group, source, hostname)
+      group ||= 'base'
       @groups[group] ||= Group.new(group)
-      @groups[group] << Host.new(ip_address, hostname)
+      @groups[group] << Host.new(source, hostname)
     end
 
     def enable(entry)
