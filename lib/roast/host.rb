@@ -20,7 +20,6 @@ module Roast
     end
 
     def validate!
-      raise ArgumentError, "`#{ip_address}' is an invalid ip address" unless ip_address =~ IP_PATTERN
       raise ArgumentError, "`#{hostname}' is an invalid hostname" unless hostname =~ HOST_PATTERN
     end
 
