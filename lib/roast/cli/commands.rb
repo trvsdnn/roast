@@ -26,6 +26,11 @@ module Roast
         exit 1
       end
 
+      def confirm(message = 'Are you sure that you want to do that?')
+        puts "#{message} [\"yes\" or \"no\"]"
+        exit if $stdin.gets.chomp !~ /\Ay(?:es)?\Z/i
+      end
+
       def add(*args)
         if args.length < 2
           raise ArgumentError, "You must provide an ip address and a hostname to point it to: `roast add 127.0.0.1 something.dev'"
@@ -67,6 +72,7 @@ module Roast
 
       def delete(*args)
         entry   = args.first
+        confirm("Are you sure that you want to delete entries matching `#{entry}'?")
         results = @hosts_file.delete(entry)
         if results.empty?
           puts "no entries found matching `#{entry}'"
@@ -100,7 +106,7 @@ module Roast
 
       def delete_group(*args)
         group = args.first
-
+        confirm("Are you sure that you want to delete the group `#{group}'?")
         if @hosts_file.delete_group(group)
           @hosts_file.write
           puts "deleted group `#{group}'"
